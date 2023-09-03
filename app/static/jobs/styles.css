@@ -1,0 +1,118 @@
+   #content {
+       max-width: 900px;
+       margin: auto;
+   }
+
+   .job {
+       margin-top: 20px;
+       margin-bottom: 100px;
+
+   }
+
+   .job-title {
+       font-weight: bold;
+   }
+
+   .job-status {
+       font-weight: bolder;
+       font-size: 1.4rem;
+       color: green;
+   }
+
+   .company {
+       font-weight: bolder;
+       margin-bottom: 10px;
+   }
+
+   .blacklist {
+       margin-left: 20px;
+       display: inline;
+   }
+
+   .description {
+       margin-top: 40px;
+   }
+
+   .status-updater {
+       margin-top: 20px;
+       margin-bottom: 20px;
+   }
+
+   .status-updater>div {
+       display: inline;
+       margin-right: 10px;
+       user-select: none;
+   }
+
+   .status-updater form {
+       display: inline;
+   }
+
+   .status-updater>div:hover {
+       cursor: pointer;
+   }
+
+   .hidden {
+       display: none !important;
+   }
+
+   .status-filters>label {
+       margin-left: 30px;
+   }
+
+   .status-filters>label,
+   .status-filters>input {
+       user-select: none;
+   }
+
+   .status-filters>label:hover,
+   .status-filters>input:hover {
+       user-select: none;
+       cursor: pointer;
+   }
+
+   .input {
+       margin-bottom: 10px;
+   }
+
+   .highlight {
+       background-color: aqua;
+   }
+
+   .company-status {
+       font-weight: bolder;
+       font-size: 1.2rem;
+       color: royalblue;
+       background-color: lavender;
+       margin: 10px 10px;
+   }
+
+   .menu-href {
+       margin-right: 10px;
+   }
+
+   .errors {
+       margin: 10px;
+   }
+
+   .errors>div {
+       color: red;
+   }
+
+   button.status-link {
+       background: none !important;
+       border: none;
+       padding: 0 !important;
+       /*optional*/
+       font-family: arial, sans-serif;
+       font-size: unset;
+       /*input has OS specific font-family*/
+       color: #069;
+       text-decoration: underline;
+       cursor: pointer;
+   }
+
+   a {
+       /* color: #069; */
+       font-family: arial, sans-serif;
+   }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jobs/styles.css' %}">
+    <title>Titles</title>
+
+
+    <style>
+        #content {
+            font-size: 1em;
+        }
+
+        .status-updater {
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        .jobs-found {
+            margin-top: 0em;
+            margin-bottom: 0em;
+        }
+
+        .job-title {
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div>
+            <a href="{% url 'jobs:index' %}">home</a> -
+            <a href="{% url 'jobs:titles' %}">titles</a>
+        </div>
+
+
+        <div>
+            <form action="{% url 'jobs:titles'}" method="post">
+                <fieldset>
+                    <legend>Filters</legend>
+                    <div>
+                        <div class="input">
+                            <label for="titleSearch">Title Search</label>
+                            <input type="text" name="titleSearch" id="titleSearch" value="{{title_search}}" />
+                        </div>
+                        <input type="submit" value="Search">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <br>
+        <div class="jobs-found">
+            Jobs Found: {{jobs_size}}
+        </div>
+        <br>
+
+        {% if jobs%}
+        {% for job in jobs %}
+        <div class="job-title-listing">
+            <div class="status-updater">
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="declined" value="declined">declined</button>
+                        <input type="hidden" name="status" id="declined" value="declined">
+                        <input type="hidden" name="next" id="next" value="jobs:titles">
+                    </form>
+                </div>
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="interested"
+                            value="interested">interested</button>
+                        <input type="hidden" name="status" id="interested" value="interested">
+                        <input type="hidden" name="next" id="next" value="jobs:titles">
+                    </form>
+                </div>
+                <a class="job-title" href="{{job.url}}" target="_blank">{{job.title}}</a>
+                <span>{{job.subtitle}}</span>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h2>No jobs found</h2>
+        {% endif %}
+    </div>
+</body>
+
+</html>

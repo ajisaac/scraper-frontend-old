@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jobs/styles.css' %}">
+    <title>Jobs</title>
+    <style>
+        .green{
+            color: green;
+        }
+        .bold{
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="content">
+        <div>
+            <a href="{% url 'jobs:index' %}">home</a> -
+            <a href="{% url 'jobs:titles' %}">titles</a>
+        </div>
+
+        <div>
+            <fieldset>
+                <legend>Filters</legend>
+                <div>
+                    <div class="input status-filters">
+                        <a href="{% url 'jobs:status_filter' 'new' %}">new</a> -
+                        <a href="{% url 'jobs:status_filter' 'declined' %}">declined</a> -
+                        <a href="{% url 'jobs:status_filter' 'interested' %}">interested</a> -
+                        <a href="{% url 'jobs:status_filter' 'later' %}">later</a> -
+                        <a href="{% url 'jobs:status_filter' 'applied' %}">applied</a> -
+                        <a href="{% url 'jobs:status_filter' 'interviewing' %}">interviewing</a> -
+                        <a href="{% url 'jobs:status_filter' 'rejected' %}">rejected</a>
+                    </div>
+
+                    <form action="#" action="@{/}" object="${mainFilter}" method="post">
+                        <div class="input">
+                            <label for="companySearch">Companies</label>
+                            <input type="text" name="companySearch" id="companySearch"
+                                value="{{filter.company_search}}" />
+                        </div>
+                        <div class="input">
+                            <label for="searchTerms">Search Terms</label>
+                            <input type="text" name="searchTerms" id="searchTerms" value="{{filter.text_search}}" />
+                        </div>
+                        <div class="input">
+                            <label for="titleSearch">Title Search</label>
+                            <input type="text" name="titleSearch" id="titleSearch" value="{{filter.title_search}}" />
+                        </div>
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="jobs-found">{{job_count}} <span class="green bold"> {{filter.status|upper}} </span> jobs found</div>
+        {% if job%}
+        <div class="job">
+            <a class="job-title" href="{{job.url}}" target="_blank">{{job.title}}</a>
+            <div class="job-status">
+                {{job.status}}
+            </div>
+            <div class="status-updater">
+
+                {% if job.status != 'new' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="new" value="new">new</button>
+                        <input type="hidden" name="status" id="new" value="new">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'declined' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="declined" value="declined">declined</button>
+                        <input type="hidden" name="status" id="declined" value="declined">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'interested' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="interested"
+                            value="interested">interested</button>
+                        <input type="hidden" name="status" id="interested" value="interested">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'later' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="later" value="later">later</button>
+                        <input type="hidden" name="status" id="later" value="later">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'applied' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="applied" value="applied">applied</button>
+                        <input type="hidden" name="status" id="applied" value="applied">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'interviewing' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="interviewing"
+                            value="interviewing">interviewing</button>
+                        <input type="hidden" name="status" id="interviewing" value="interviewing">
+                        <input type="hidden" name="next" id="next" value="jobs:index">
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if job.status != 'rejected' %}
+                <div>
+                    <form method="post" action="{% url 'jobs:update_status' job.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="status-link" name="rejected" value="rejected">rejected</button>
+                        <input type="hidden" name="status" id="rejected" value="rejected">
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+            <div class="company">
+                <span>
+                    {{job.company}}
+                    {% if job.subtitle %}
+                    - {{job.subtitle}}
+                    {% endif %}
+                </span>
+            </div>
+            <!-- <span class="company-status" th:each="status:${job.companyStatuses}" th:text="${status}" /> -->
+            <div class="description">{{ job.description | safe }}</div>
+            <hr>
+        </div>
+        {% else %}
+        <p>No Jobs are available.</p>
+        {% endif %}
+
+</body>
+
+</html>
