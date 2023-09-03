@@ -1,36 +1,83 @@
-   #content {
+   .container {
        max-width: 900px;
        margin: auto;
+   }
+
+   /* MAIN PAGE FILTER */
+
+   .jobs-found {
+       margin-bottom: 25px;
+   }
+
+   .filter {
+       margin-bottom: 5px;
+   }
+
+   .filter__link-list {
+       margin: 0px 0px 10px;
+   }
+
+   .filter__form-sections {
+       display: flex;
+       justify-content: flex-start;
+       column-gap: 100px;
+   }
+
+   .filter__form-input {
+       margin-bottom: 5px;
+   }
+
+   .button-link {
+       background: none !important;
+       border: none;
+       padding: 0 !important;
+       /*optional*/
+       font-family: arial, sans-serif;
+       font-size: unset;
+       /*input has OS specific font-family*/
+       color: #069;
+       text-decoration: underline;
+       cursor: pointer;
    }
 
    .job {
        margin-top: 20px;
        margin-bottom: 100px;
-
    }
 
-   .job-title {
+   .job__title {
        font-weight: bold;
+
    }
 
-   .job-status {
-       font-weight: bolder;
-       font-size: 1.4rem;
-       color: green;
-   }
-
-   .company {
-       font-weight: bolder;
-       margin-bottom: 10px;
-   }
-
-   .blacklist {
-       margin-left: 20px;
+   .job__status {
+       font-weight: bold;
+       font-size: 1.2rem;
+       color: yellow;
+       background-color: blue;
+       border-radius: 5px;
+       padding: 2px 6px;
        display: inline;
+       margin-left: 5px;
    }
 
-   .description {
+   .job__company {
+       font-weight: bolder;
+       margin-bottom: 15px;
+   }
+
+   .job__description {
        margin-top: 40px;
+   }
+
+   .job__link-action {
+       display: inline-block;
+       margin: 2px 2px;
+   }
+
+   .title__link-action {
+       display: inline-block;
+       margin: 0px 5px;
    }
 
    .status-updater {
@@ -38,37 +85,8 @@
        margin-bottom: 20px;
    }
 
-   .status-updater>div {
-       display: inline;
-       margin-right: 10px;
-       user-select: none;
-   }
-
-   .status-updater form {
-       display: inline;
-   }
-
-   .status-updater>div:hover {
-       cursor: pointer;
-   }
-
    .hidden {
        display: none !important;
-   }
-
-   .status-filters>label {
-       margin-left: 30px;
-   }
-
-   .status-filters>label,
-   .status-filters>input {
-       user-select: none;
-   }
-
-   .status-filters>label:hover,
-   .status-filters>input:hover {
-       user-select: none;
-       cursor: pointer;
    }
 
    .input {
@@ -87,32 +105,7 @@
        margin: 10px 10px;
    }
 
-   .menu-href {
-       margin-right: 10px;
-   }
-
-   .errors {
-       margin: 10px;
-   }
-
-   .errors>div {
-       color: red;
-   }
-
-   button.status-link {
-       background: none !important;
-       border: none;
-       padding: 0 !important;
-       /*optional*/
-       font-family: arial, sans-serif;
-       font-size: unset;
-       /*input has OS specific font-family*/
-       color: #069;
-       text-decoration: underline;
-       cursor: pointer;
-   }
-
    a {
-       /* color: #069; */
+       color: rgb(0, 0, 238);
        font-family: arial, sans-serif;
    }
