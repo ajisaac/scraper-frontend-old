@@ -1,0 +1,53 @@
+{% extends "jobs/base.html" %}
+{% block title %}Titles{% endblock %}
+{% block body %}
+
+<div class="filter">
+    <fieldset>
+        <legend>Filter</legend>
+        <form action="{{ url('jobs:titles_title_search')}}" method="post">
+            {{ csrf_input }}
+            <div>
+                <div class="filter__form-input">
+                    <label for="title_search">Title Search</label>
+                    <input type="text" name="title_search" id="title_search" value="{{title_search}}" />
+                </div>
+                <input type="submit" value="Search">
+            </div>
+        </form>
+    </fieldset>
+</div>
+
+<div class="jobs-found">
+    Jobs Found: {{jobs_size}}
+</div>
+
+{% if jobs%}
+{% for job in jobs %}
+<div>
+    <div>
+        <div class="title__link-action">
+            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                {{ csrf_input }}
+                <button class="button-link" type="submit" name="declined" value="declined">declined</button>
+                <input type="hidden" name="status" id="declined" value="declined">
+                <input type="hidden" name="next" id="next" value="jobs:titles">
+            </form>
+        </div>
+        <div class="title__link-action">
+            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                {{ csrf_input }}
+                <button class="button-link" type="submit" name="interested" value="interested">interested</button>
+                <input type="hidden" name="status" id="interested" value="interested">
+                <input type="hidden" name="next" id="next" value="jobs:titles">
+            </form>
+        </div>
+        <a href="{{job.url}}" target="_blank">{{job.title}}</a>
+        <span>{{job.subtitle}}</span>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<h2>No jobs found</h2>
+{% endif %}
+{% endblock %}
