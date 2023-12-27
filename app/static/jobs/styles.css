@@ -1,111 +1,155 @@
-   .container {
-       max-width: 900px;
-       margin: auto;
-   }
+.container {
+    max-width: 900px;
+    margin: auto;
+}
 
-   /* MAIN PAGE FILTER */
+/* MAIN PAGE FILTER */
 
-   .jobs-found {
-       margin-bottom: 25px;
-   }
+.jobs-found {
+    margin-bottom: 25px;
+}
 
-   .filter {
-       margin-bottom: 5px;
-   }
+.filter {
+    margin-bottom: 5px;
+}
 
-   .filter__link-list {
-       margin: 0px 0px 10px;
-   }
+.filter__link-list {
+    margin: 0px 0px 10px;
+}
 
-   .filter__form-sections {
-       display: flex;
-       justify-content: flex-start;
-       column-gap: 100px;
-   }
+.filter__form-sections {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 100px;
+}
 
-   .filter__form-input {
-       margin-bottom: 5px;
-   }
+.filter__form-input {
+    margin-bottom: 5px;
+}
 
-   .button-link {
-       background: none !important;
-       border: none;
-       padding: 0 !important;
-       /*optional*/
-       font-family: arial, sans-serif;
-       font-size: unset;
-       /*input has OS specific font-family*/
-       color: #069;
-       text-decoration: underline;
-       cursor: pointer;
-   }
+.button-link {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    font-size: unset;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
 
-   .job {
-       margin-top: 20px;
-       margin-bottom: 100px;
-   }
+.job {
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
 
-   .job__title {
-       font-weight: bold;
+.job__title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 
-   }
+.job__status {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: yellow;
+    background-color: blue;
+    border-radius: 5px;
+    padding: 2px 6px;
+    display: inline;
+    margin-left: 5px;
+}
 
-   .job__status {
-       font-weight: bold;
-       font-size: 1.2rem;
-       color: yellow;
-       background-color: blue;
-       border-radius: 5px;
-       padding: 2px 6px;
-       display: inline;
-       margin-left: 5px;
-   }
+.job__company {
+    font-weight: bolder;
+    margin-bottom: 15px;
+}
 
-   .job__company {
-       font-weight: bolder;
-       margin-bottom: 15px;
-   }
+.job__status-new {
+    color: yellow;
+    background-color: green;
+}
 
-   .job__description {
-       margin-top: 40px;
-   }
+.job__status-declined {
+    color: yellow;
+    background-color: orange;
+}
 
-   .job__link-action {
-       display: inline-block;
-       margin: 2px 2px;
-   }
+.job__status-interested {
+    color: #d1baff;
+    background-color: #5914ec;
+}
 
-   .title__link-action {
-       display: inline-block;
-       margin: 0px 5px;
-   }
+.job__status-later {
+    color: #98eeec;
+    background-color: grey;
+}
 
-   .status-updater {
-       margin-top: 20px;
-       margin-bottom: 20px;
-   }
+.job__status-applied {
+    color: yellow;
+    background-color: blue;
+}
 
-   .hidden {
-       display: none !important;
-   }
+.job__status-interviewing {
+    color: yellow;
+    background-color: magenta;
+}
 
-   .input {
-       margin-bottom: 10px;
-   }
+.job__status-rejected{
+    color: yellow;
+    background-color: red;
+}
 
-   .highlight {
-       background-color: aqua;
-   }
+.job__company-status {
+    font-weight: bold;
+    font-size: .9rem;
+    border-radius: 5px;
+    padding: 1px 3px;
+    display: inline;
+    margin-left: 2px;
+}
 
-   .company-status {
-       font-weight: bolder;
-       font-size: 1.2rem;
-       color: royalblue;
-       background-color: lavender;
-       margin: 10px 10px;
-   }
+.job__description {
+    margin-top: 40px;
+}
 
-   a {
-       color: rgb(0, 0, 238);
-       font-family: arial, sans-serif;
-   }
+.job__link-action {
+    display: inline-block;
+    margin: 2px 2px;
+}
+
+.title__link-action {
+    display: inline-block;
+    margin: 0px 5px;
+}
+
+.status-updater {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.input {
+    margin-bottom: 10px;
+}
+
+.highlight {
+    background-color: aqua;
+}
+
+.company-status {
+    font-weight: bolder;
+    font-size: 1.2rem;
+    color: royalblue;
+    background-color: lavender;
+    margin: 10px 10px;
+}
+
+a {
+    color: rgb(0, 0, 238);
+    font-family: arial, sans-serif;
+}

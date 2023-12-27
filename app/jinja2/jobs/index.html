@@ -3,145 +3,176 @@
 {% block title %}Jobs{% endblock %}
 
 {% block body %}
-<div class="filter">
-    <fieldset>
-        <legend>Filter</legend>
+    <div class="filter">
+        <fieldset>
+            <legend>Filter</legend>
 
+            <div>
+                <div class="filter__link-list">
+                    <a href="{{ url('jobs:status_filter', args=['new'])}}">new</a> -
+                    <a href="{{ url('jobs:status_filter', args=['declined'])}}">declined</a> -
+                    <a href="{{ url('jobs:status_filter', args=['interested'])}}">interested</a> -
+                    <a href="{{ url('jobs:status_filter', args=['later'])}}">later</a> -
+                    <a href="{{ url('jobs:status_filter', args=['applied'])}}">applied</a> -
+                    <a href="{{ url('jobs:status_filter', args=['interviewing'])}}">interviewing</a> -
+                    <a href="{{ url('jobs:status_filter', args=['rejected'])}}">rejected</a>
+                </div>
+
+                <div class="filter__form-sections">
+                    <div class="filter__form-section">
+                        <form action="{{ url('jobs:main__filter_search')}}" method="post">
+                            {{ csrf_input }}
+                            <div class="filter__form-input">
+                                <label for="index__company_search">Companies</label>
+                                <input type="text" name="index__company_search" id="index__company_search"
+                                       value="{{ request.session['index__company_search']}}"/>
+                            </div>
+                            <div class="filter__form-input">
+                                <label for="index__text_search">Search Terms</label>
+                                <input type="text" name="index__text_search" id="index__text_search"
+                                       value="{{ request.session['index__text_search']}}"/>
+                            </div>
+                            <div class="filter__form-input">
+                                <label for="index__title_search">Title Search</label>
+                                <input type="text" name="index__title_search" id="index__title_search"
+                                       value="{{ request.session['index__title_search']}}"/>
+                            </div>
+                            <input type="submit" value="Search">
+                        </form>
+                    </div>
+                    <div class="filter__form-section">
+                        <div class="filter__job-site-selector">
+                            <a href="{{ url('jobs:job_site_filter', args=['all'])}}">All</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['indeed'])}}">Indeed</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['skip_the_drive'])}}">Skip The Drive</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['working_nomads'])}}">Working Nomads</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['wellfound'])}}">Wellfound</a><br>
+                            <a href="{{ url('jobs:job_site_filter', args=['remote_co'])}}">Remote.co</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['remotive'])}}">Remotive</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['remote_ok'])}}">RemoteOk</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['we_work_remotely'])}}">We Work
+                                Remotely</a><br>
+                            <a href="{{ url('jobs:job_site_filter', args=['flexjobs'])}}">FlexJobs</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['startup_jobs'])}}">Startup.jobs</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['built_in_sea'])}}">Built in Seattle</a> -
+                            <a href="{{ url('jobs:job_site_filter', args=['hacker_news'])}}">Hacker News</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="jobs-found">{{ job_count }}
+        <span> {{ request.session['index__status_filter']|upper}} </span>
+        jobs found from
+        <span> {{ request.session['index__job_site_filter']|upper}} </span>
+    </div>
+
+    {% for job in jobs %}
         <div>
-            <div class="filter__link-list">
-                <a href="{{ url('jobs:status_filter', args=['new'])}}">new</a> -
-                <a href="{{ url('jobs:status_filter', args=['declined'])}}">declined</a> -
-                <a href="{{ url('jobs:status_filter', args=['interested'])}}">interested</a> -
-                <a href="{{ url('jobs:status_filter', args=['later'])}}">later</a> -
-                <a href="{{ url('jobs:status_filter', args=['applied'])}}">applied</a> -
-                <a href="{{ url('jobs:status_filter', args=['interviewing'])}}">interviewing</a> -
-                <a href="{{ url('jobs:status_filter', args=['rejected'])}}">rejected</a>
+            <div class="job__title">
+                <a href="{{ job.url }}" target="_blank">{{ job.title }}</a>
+                <span class="job__status job__status-{{ job.status }}"> {{ job.status }} </span>
             </div>
 
-            <div class="filter__form-sections">
-                <div class="filter__form-section">
-                    <form action="{{ url('jobs:main__filter_search')}}" method="post">
-                        {{ csrf_input }}
-                        <div class="filter__form-input">
-                            <label for="company_search">Companies</label>
-                            <input type="text" name="company_search" id="company_search"
-                                value="{{search_filter['company_search']}}" />
-                        </div>
-                        <div class="filter__form-input">
-                            <label for="search_terms">Search Terms</label>
-                            <input type="text" name="search_terms" id="search_terms"
-                                value="{{search_filter['text_search']}}" />
-                        </div>
-                        <div class="filter__form-input">
-                            <label for="title_search">Title Search</label>
-                            <input type="text" name="title_search" id="title_search"
-                                value="{{search_filter['title_search']}}" />
-                        </div>
-                        <input type="submit" value="Search">
-                    </form>
-                </div>
-                <div class="filter__form-section">
-                    job_site selector
-                </div>
+            <div class="job__company">
+                <span> {{ job.company }} -
+
+                    {% if job.company_statuses|length != 0 %}
+                        {% for status in job.company_statuses %}
+                            <span class="job__company-status job__status-{{ status }}">{{ status }}</span> -
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if job.subtitle %} {{ job.subtitle }} {% endif %}
+
+                </span>
             </div>
+
+            <div class="job__actions">
+                {% if job.status != 'new' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="new" value="new">new</button>
+                            <input type="hidden" name="status" id="new" value="new">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'declined' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="declined" value="declined">declined</button>
+                            <input type="hidden" name="status" id="declined" value="declined">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'interested' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="interested" value="interested">interested
+                            </button>
+                            <input type="hidden" name="status" id="interested" value="interested">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'later' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="later" value="later">later</button>
+                            <input type="hidden" name="status" id="later" value="later">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'applied' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="applied" value="applied">applied</button>
+                            <input type="hidden" name="status" id="applied" value="applied">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'interviewing' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="interviewing" value="interviewing">
+                                interviewing
+                            </button>
+                            <input type="hidden" name="status" id="interviewing" value="interviewing">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+
+                {% if job.status != 'rejected' %}
+                    <div class="job__link-action">
+                        <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
+                            {{ csrf_input }}
+                            <button class="button-link" type="submit" name="rejected" value="rejected">rejected</button>
+                            <input type="hidden" name="status" id="rejected" value="rejected">
+                            <input type="hidden" name="next" id="next" value="jobs:index">
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="job__description">{{ job.description | safe }}</div>
+            <hr>
         </div>
-    </fieldset>
-</div>
-
-<div class="jobs-found">{{job_count}} <span> {{filter.status|upper}} </span> jobs found</div>
-
-{% for job in jobs %}
-<div>
-    <div class="job__title">
-        <a href="{{job.url}}" target="_blank">{{job.title}}</a>
-        <span class="job__status">
-            {{job.status}}
-        </span>
-
-    </div>
-    <div class="job__company">
-        <span> {{job.company}} {% if job.subtitle %} - {{job.subtitle}} {% endif %} </span>
-    </div>
-
-    <div class="job__actions">
-        {% if job.status != 'new' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="new" value="new">new</button>
-                <input type="hidden" name="status" id="new" value="new">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'declined' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="declined" value="declined">declined</button>
-                <input type="hidden" name="status" id="declined" value="declined">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'interested' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="interested" value="interested">interested</button>
-                <input type="hidden" name="status" id="interested" value="interested">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'later' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="later" value="later">later</button>
-                <input type="hidden" name="status" id="later" value="later">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'applied' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="applied" value="applied">applied</button>
-                <input type="hidden" name="status" id="applied" value="applied">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'interviewing' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="interviewing" value="interviewing">interviewing</button>
-                <input type="hidden" name="status" id="interviewing" value="interviewing">
-                <input type="hidden" name="next" id="next" value="jobs:index">
-            </form>
-        </div>
-        {% endif %}
-
-        {% if job.status != 'rejected' %}
-        <div class="job__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="rejected" value="rejected">rejected</button>
-                <input type="hidden" name="status" id="rejected" value="rejected">
-            </form>
-        </div>
-        {% endif %}
-    </div>
-    <div class="job__description">{{ job.description | safe }}</div>
-    <hr>
-</div>
-{% endfor %}
+    {% endfor %}
 {% endblock %}

@@ -9,8 +9,9 @@
             {{ csrf_input }}
             <div>
                 <div class="filter__form-input">
-                    <label for="title_search">Title Search</label>
-                    <input type="text" name="title_search" id="title_search" value="{{title_search}}" />
+                    <label for="titles__title_search">Title Search</label>
+                    <input type="text" name="titles__title_search" id="titles__title_search"
+                        value="{{request.session['titles__title_search']}}" />
                 </div>
                 <input type="submit" value="Search">
             </div>
@@ -19,32 +20,54 @@
 </div>
 
 <div class="jobs-found">
-    Jobs Found: {{jobs_size}}
+    Jobs Found: <span id="counter">{{jobs_size}}</span>
 </div>
 
 {% if jobs%}
 {% for job in jobs %}
 <div>
-    <div>
+    <div id="job-{{job.id}}">
         <div class="title__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="declined" value="declined">declined</button>
-                <input type="hidden" name="status" id="declined" value="declined">
-                <input type="hidden" name="next" id="next" value="jobs:titles">
-            </form>
+            <button class="button-link" type="submit" name="declined" value="declined" data-id="{{job.id}}"
+                data-status="declined" onclick="removeTitle(event)">declined</button>
         </div>
         <div class="title__link-action">
-            <form method="post" action="{{ url('jobs:update_status', args=[job.id]) }}">
-                {{ csrf_input }}
-                <button class="button-link" type="submit" name="interested" value="interested">interested</button>
-                <input type="hidden" name="status" id="interested" value="interested">
-                <input type="hidden" name="next" id="next" value="jobs:titles">
-            </form>
+            <button class="button-link" type="submit" name="interested" value="interested" data-id="{{job.id}}"
+                data-status="interested" onclick="removeTitle(event)">interested</button>
         </div>
         <a href="{{job.url}}" target="_blank">{{job.title}}</a>
         <span>{{job.subtitle}}</span>
     </div>
+    <script>
+        function decreaseCounter() {
+            let counter = document.getElementById('counter')
+            let count = counter.innerHTML
+            count = parseInt(count)
+            count = count - 1
+            counter.innerHTML = count
+        }
+        function removeTitle(e) {
+            e.preventDefault()
+            let status = e.target.dataset.status
+            let id = parseInt(e.target.dataset.id)
+
+            fetch('/rest/update_status/' + id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            }).then((response) => {
+                if (response.ok) {
+                    decreaseCounter()
+                    document.querySelector('#job-' + id).remove()
+                }
+            })
+        }
+    </script>
 </div>
 {% endfor %}
 {% else %}
